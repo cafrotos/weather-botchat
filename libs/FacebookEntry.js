@@ -1,6 +1,6 @@
 let getFacebookMessageFromEntry = (data) => {
   let entries = data ? data.entry : null;
-  let dataFilter = [];
+  let userMessages = [];
 
   if (!entries || !Array.isArray(entries)) throw new Error("Data from api layer error");
 
@@ -13,11 +13,11 @@ let getFacebookMessageFromEntry = (data) => {
       }
       if (message.sender) userMessage.id = message.sender.id;
       if (message.message) userMessage.message = message.message.text;
-      dataFilter.push(userMessage);
+      userMessages.push(userMessage);
     })
   })
 
-  return dataFilter;
+  return userMessages;
 }
 
 module.exports = {
