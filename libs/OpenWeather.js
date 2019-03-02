@@ -35,7 +35,7 @@ let convertCityWeatherInformation = (data) => {
     let weatherName = WEATHER_CONDITION_CODES[weatherInfo.id];
     weather.push(weatherName);
   })
-  let response = `Giờ hiện tại: ${hoursNow >= 24 ? 24 - hoursNow : hoursNow} giờ ${now.getMinutes()} phút,`
+  let response = `Giờ hiện tại: ${hoursNow >= 24 ? hoursNow - 24 : hoursNow} giờ ${now.getMinutes()} phút,`
     + `\nThời tiết: ${weather.toString()},`
     + `\nNhiệt độ: ${data.main.temp}°C,`
     + `\nĐộ ẩm: ${data.main.humidity}%,`
