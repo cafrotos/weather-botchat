@@ -8,5 +8,6 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/webhook', webhook.createWebHook);
+router.post('/webhook', webhook.webhookListener);
 
 module.exports = router;
