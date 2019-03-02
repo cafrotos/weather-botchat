@@ -29,12 +29,13 @@ let convertCityWeatherInformation = (data) => {
     data = JSON.parse(data);
   }
   let now = new Date()
+  let hoursNow = now.getHours() + 7; //múi giờ +7, tại server đang ở gtm 0;
   let weather = [];
   data.weather.map(weatherInfo => {
     let weatherName = WEATHER_CONDITION_CODES[weatherInfo.id];
     weather.push(weatherName);
   })
-  let response = `Giờ hiện tại: ${now.getHours()} giờ ${now.getMinutes()} phút,`
+  let response = `Giờ hiện tại: ${hoursNow >= 24 ? 24 - hoursNow : hoursNow} giờ ${now.getMinutes()} phút,`
     + `\nThời tiết: ${weather.toString()},`
     + `\nNhiệt độ: ${data.main.temp}°C,`
     + `\nĐộ ẩm: ${data.main.humidity}%,`
