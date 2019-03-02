@@ -1,0 +1,4 @@
+{
+  "messenger": "https://graph.facebook.com/v2.6/me/messages",
+  "openweather": "http://api.openweathermap.org/data/2.5/weather"
+}

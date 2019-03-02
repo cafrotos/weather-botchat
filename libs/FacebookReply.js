@@ -1,10 +1,11 @@
 const TOKEN_PAGE = process.env.TOKEN_PAGE;
 const request = require('request')
+const setting = require('../config/setting.json')
 
 let replyToUser = (userId, message) => {
-  console.log(TOKEN_PAGE)
+  let messengerUrl = setting.messenger;
   request({
-    url: 'https://graph.facebook.com/v2.6/me/messages',
+    url: messengerUrl,
     qs: {
       access_token: TOKEN_PAGE,
     },
@@ -17,6 +18,8 @@ let replyToUser = (userId, message) => {
         text: message
       },
     }
+  }, (err, res, body) => {
+    if(err) console.log(err)
   })
 }
 

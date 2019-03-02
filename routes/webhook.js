@@ -2,6 +2,7 @@ const createErrors = require('http-errors');
 const verify_token = 'cafrotoslovethocon';
 const FacebookEntry = require('../libs/FacebookEntry');
 const FacebookReply = require('../libs/FacebookReply');
+const OpenWeather = require('../libs/OpenWeather');
 
 let createWebHook = (req, res, next) => {
   if (req.query['hub.verify_token'] === verify_token) {
@@ -14,7 +15,13 @@ let webhookListener = (req, res, next) => {
   let data = req.body;
   let userMessages = FacebookEntry.getFacebookMessageFromEntry(data);
   userMessages.map(userMessage => {
-    FacebookReply.replyToUser(userMessage.id, userMessage.message);
+    OpenWeather.getCityWeatherInformation(userMessage.message)
+      .then(weatherInfo => {
+        FacebookReply.replyToUser(userMessage.id, weatherInfo);
+      })
+      .catch(err => {
+        FacebookReply.replyToUser(userMessage.id, err.message || "Hệ thống lỗi, vui lòng thử lại lúc khác!");
+      })
   })
   res.status(200).send('ok')
 }
