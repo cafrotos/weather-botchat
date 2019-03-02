@@ -4,9 +4,22 @@ const setting = require('../config/setting.json')
 const { WEATHER_CONDITION_CODES } = require('../constants')
 const TOKEN_OPEN_WEATHER = process.env.TOKEN_OPEN_WEATHER;
 
+let convertToUnsignedWord = (str) => {
+  str = str.toLowerCase();
+  str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+  str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+  str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+  str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+  str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+  str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+  str = str.replace(/đ/g, "d");
+  return str;
+} 
+
 let getCityInfomationByName = (name) => {
-  name = name.toLowerCase();
-  let cityInfo = City[name] ? City[name] : null;
+  let cityName = name.toLowerCase();
+  let cityNameUnsignedWord = convertToUnsignedWord(name);
+  let cityInfo = City[cityName] ? City[cityName] : City[cityNameUnsignedWord];
   if (!cityInfo) throw new Error("Tỉnh/thành phố hiện tại chưa được hỗ trợ, vui lòng thử lại!");
   return cityInfo;
 }
@@ -30,9 +43,14 @@ let convertCityWeatherInformation = (data) => {
 }
 
 let getCityWeatherInformation = (cityName) => {
-  let cityInfo = getCityInfomationByName(cityName);
-  let openweatherUrl = setting.openweather;
   return new Promise((resolve, reject) => {
+    let cityInfo;
+    let openweatherUrl = setting.openweather;
+    try {
+      cityInfo = getCityInfomationByName(cityName);
+    } catch (error) {
+      reject(error);
+    }
     request({
       url: openweatherUrl,
       qs: {

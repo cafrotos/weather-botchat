@@ -3,7 +3,6 @@ const request = require('request')
 const setting = require('../config/setting.json')
 
 let replyToUser = (userId, message) => {
-  console.log("=========> data input for replyToUser", userId, message);
   let messengerUrl = setting.messenger;
   request({
     url: messengerUrl,

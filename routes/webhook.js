@@ -13,7 +13,13 @@ let createWebHook = (req, res, next) => {
 
 let webhookListener = (req, res, next) => {
   let data = req.body;
-  let userMessages = FacebookEntry.getFacebookMessageFromEntry(data);
+  let userMessages
+  try {
+    userMessages = FacebookEntry.getFacebookMessageFromEntry(data);
+  } catch (error) {
+    console.log(error);
+    return;
+  }
   userMessages.map(userMessage => {
     OpenWeather.getCityWeatherInformation(userMessage.message)
       .then(weatherInfo => {
